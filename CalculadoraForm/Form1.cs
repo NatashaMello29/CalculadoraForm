@@ -23,7 +23,31 @@ namespace CalculadoraForm
 
         private void btnIgual_Click(object sender, EventArgs e)
         {
-            // Implementar depois...
+            string texto = txbTela.Text;
+            string ultimoChar = texto.Length > 0 ? texto[texto.Length - 1].ToString() : "";
+            
+            if (texto != "" && ultimoChar != "+" && ultimoChar != "-" && ultimoChar != "*" && ultimoChar != "/")
+            {
+                // Calcular a expressao:
+                txbTela.Text = new System.Data.DataTable().Compute(txbTela.Text, null).ToString();
+                if (txbTela.Text == "∞")
+                {
+                    MessageBox.Show("Erro");
+                }
+
+                // Abaixar a bandeirinha:
+                operador_Clicado = false;
+
+
+            }
+            else
+            {
+                // Mostrar erro na tela:
+                MessageBox.Show("erro");
+                // Levantar a bandeirinha:
+                operador_Clicado = true;
+            }
+
         }
 
         private void numero_Click(object sender, EventArgs e)
@@ -44,7 +68,8 @@ namespace CalculadoraForm
             if (operador_Clicado == false)
             {
 
-
+                if (txbTela.Text == "Erro")
+                    return;
                 // Obter o botão que está chamando esse evento:
                 Button botaoClicado = (Button)sender;
 
@@ -57,5 +82,12 @@ namespace CalculadoraForm
 
         }
 
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            // Limpar a tela:
+            txbTela.Text = "";
+            // Voltar o operador clicado para true:
+            operador_Clicado = true;
+        }
     }
 }
